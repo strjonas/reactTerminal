@@ -2,16 +2,33 @@ import "./index.scss";
 import React, { useState } from "react";
 
 function App() {
-  const [commands, setCommands] = useState(["ls", "ipconfig"]);
-  const [path, setPath] = useState("/Users/Jonas");
-  const [currentDir, setcurrentDir] = useState("Jonas");
-  const [folders, setFolders] = useState({ Jonas: ["ReadME.txt"] });
-  const [parentDir, setparentDir] = useState({ Jonas: "Users" });
+  const [commands, setCommands] = useState([]);
+  var path = "/Users/Jonas";
+  var currentDir = "Jonas";
+  const folders = { Jonas: ["ReadME.txt"] };
+  const parentDir = { Jonas: "Users" };
   const [val, setVal] = useState([""]);
+  const user = "jonas";
+  const device = "pc";
 
-  console.log(commands);
   function output(command) {
-    switch (command[0]) {
+    command = command[0];
+    if (command.includes("mkdir")) {
+      let dir = command.split(" ")[1];
+      if (folders[dir]) return "Already exists!";
+      folders[dir] = [];
+      folders[currentDir].push(dir);
+      parentDir[dir] = currentDir;
+
+      return "";
+    } else if (command.includes("cd")) {
+      let dir = command.split(" ")[1];
+      if (!folders[currentDir].includes(dir)) return "No such directory";
+      currentDir = dir;
+      path = path + "/" + dir;
+      return "";
+    }
+    switch (command) {
       case "":
         return "";
       case "clear":
@@ -41,21 +58,28 @@ function App() {
   return (
     <div className="App">
       <div className="Terminal">
-        {commands.map((command, index) => (
-          <div key={index} className="exprContainer">
-            <div>{`${path}> ${command}`}</div>
-            <div>{`${output(command)}`}</div>
-          </div>
-        ))}
-        <div className="inputRow">
-          <div>{`${path}> `}</div>
+        <div className="terminalHeader">
+          <div className="redCircle"></div>
+          <div className="yellowCircle"></div>
+          <div className="greenCircle"></div>
+        </div>
+        <div className="mainTerminalContainer">
+          {commands.map((command, index) => (
+            <div key={index} className="exprContainer">
+              <div>{`${user}@${device} ~ %  ${command}`}</div>
+              <div>{`${output(command)}`}</div>
+            </div>
+          ))}
+          <div className="inputRow">
+            <p className="pathP">{`${user}@${device} ~ % `}</p>
 
-          <input
-            className="terminalInput"
-            onKeyPress={onEnterClick}
-            value={val}
-            onChange={onValChange}
-          ></input>
+            <input
+              className="terminalInput"
+              onKeyPress={onEnterClick}
+              value={val}
+              onChange={onValChange}
+            ></input>
+          </div>
         </div>
       </div>
     </div>

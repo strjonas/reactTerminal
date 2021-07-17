@@ -1,4 +1,9 @@
-$bgColor: black;
+$bgColor: #1e1e1e;
+$borderColor: #3c363a;
+$color: #00f100;
+$terminalButtonGreen: #00df23;
+$terminalButtonYellow: #f5be07;
+$terminalButtonRed: #f43148;
 
 body {
   margin: 0;
@@ -14,10 +19,38 @@ code {
     monospace;
 }
 
+.greenCircle {
+  width: 20px;
+  height: 20px;
+  background: $terminalButtonGreen;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  margin: 5px;
+}
+.yellowCircle {
+  width: 20px;
+  height: 20px;
+  background: $terminalButtonYellow;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  margin: 5px;
+}
+.redCircle {
+  width: 20px;
+  height: 20px;
+  background: $terminalButtonRed;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  margin: 5px;
+}
+
 .App {
   width: 100vw;
   height: 100vh;
-  color: green;
+  color: $color;
   background-color: $bgColor;
   display: flex;
   justify-content: center;
@@ -35,15 +68,24 @@ code {
   display: none;
 }
 .Terminal {
-  margin: 100px;
-  overflow: scroll;
-  padding: 10px;
-  border: 1px white solid;
+  margin: 20px;
+  border: 1px $borderColor solid;
   border-radius: 10px;
-  width: 60vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.terminalHeader {
+  height: 40px;
+  width: 100%;
+  background-color: $borderColor;
+  display: flex;
+  flex-direction: row;
+  padding-left: 5px;
+  padding-top: 5px;
 }
 
 .terminalInput {
@@ -51,10 +93,18 @@ code {
   background-color: $bgColor;
   border: none;
   outline: none;
-  color: green;
+  color: $color;
+}
+
+.mainTerminalContainer {
+  padding: 10px;
 }
 
 .inputRow {
   display: flex;
   flex-direction: row;
+}
+
+.pathP {
+  white-space: nowrap;
 }
