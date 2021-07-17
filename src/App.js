@@ -5,6 +5,7 @@ var path = "/Users/Jonas";
 var currentDir = "Jonas";
 var folders = { Jonas: ["ReadME.txt", "Dokuments"], Dokuments: [] };
 var parentDir = { Jonas: "Users", Dokuments: "Jonas" };
+var color = "#00f100";
 
 const user = "jonas";
 const device = "pc";
@@ -16,6 +17,9 @@ function App() {
   function output(command) {
     if (command.includes("mkdir")) {
       let dir = command.split(" ")[1];
+      if (dir === undefined) {
+        return "please provide a name";
+      }
       if (folders[currentDir].includes(dir)) return "Already exists!";
       folders[dir] = [];
       folders[currentDir].push(dir);
@@ -45,7 +49,15 @@ function App() {
       case "ls":
         let str = "";
         folders[currentDir].forEach((item) => {
-          str = str + `${item} `;
+          console.log(folders[item]);
+          if (folders[item] !== undefined) {
+            str =
+              str +
+              `<div style="color: lightblue;padding-left: 3px">${item}</div>`;
+          } else {
+            str = str + `<div style="padding-left: 3px">${item}</div>`;
+          }
+          console.log(str);
         });
         return str;
       case "path":
@@ -55,6 +67,14 @@ function App() {
       case "ipconfig":
         var text = "ipv4: 192.168.178.1\n";
         return text;
+      case "sudo su":
+        color = "blue";
+        return "";
+      case "exit":
+        if (color === "blue") {
+          color = "#00f100";
+        }
+        return "";
 
       default:
         return "command not found";
@@ -114,7 +134,11 @@ function App() {
               </div>
 
               <br></br>
-              <div dangerouslySetInnerHTML={{ __html: `${command[1]}` }}></div>
+              <div
+                className="row"
+                style={{ color: color }}
+                dangerouslySetInnerHTML={{ __html: `${command[1]}` }}
+              ></div>
             </div>
           ))}
           <div className="inputRow">
