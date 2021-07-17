@@ -37,6 +37,12 @@ code {
   border-radius: 50px;
   margin: 5px;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
 .redCircle {
   width: 20px;
   height: 20px;
@@ -58,8 +64,7 @@ code {
 }
 
 .exprContainer {
-  height: 50px;
-
+  margin-bottom: 5px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

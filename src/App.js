@@ -1,18 +1,19 @@
 import "./index.scss";
 import React, { useState } from "react";
 
+var path = "/Users/Jonas";
+var currentDir = "Jonas";
+var folders = { Jonas: ["ReadME.txt", "Dokuments"], Dokuments: [] };
+var parentDir = { Jonas: "Users", Dokuments: "Jonas" };
+
+const user = "jonas";
+const device = "pc";
+
 function App() {
-  const [commands, setCommands] = useState([]);
-  var path = "/Users/Jonas";
-  var currentDir = "Jonas";
-  var folders = { Jonas: ["ReadME.txt"] };
-  var parentDir = { Jonas: "Users" };
   const [val, setVal] = useState("");
-  const user = "jonas";
-  const device = "pc";
+  const [commands, setCommands] = useState([]);
 
   function output(command) {
-    console.log(command);
     if (command.includes("mkdir")) {
       let dir = command.split(" ")[1];
       if (folders[currentDir].includes(dir)) return "Already exists!";
@@ -22,11 +23,19 @@ function App() {
       return "";
     } else if (command.includes("cd")) {
       let dir = command.split(" ")[1];
+      if (dir === "..") {
+        currentDir = parentDir[currentDir];
+        let index = path.lastIndexOf("/");
+        path = path.substring(0, index);
+        return "";
+      }
       if (!folders[currentDir].includes(dir)) return "No such directory";
+
       currentDir = dir;
       path = path + "/" + dir;
       return "";
     }
+
     switch (command) {
       case "":
         return "";
@@ -34,7 +43,18 @@ function App() {
         setCommands([]);
         return "";
       case "ls":
-        return folders[currentDir];
+        let str = "";
+        folders[currentDir].forEach((item) => {
+          str = str + `${item} `;
+        });
+        return str;
+      case "path":
+        return path;
+      case "dir":
+        return currentDir;
+      case "ipconfig":
+        var text = "ipv4: 192.168.178.1\n";
+        return text;
 
       default:
         return "command not found";
@@ -64,7 +84,9 @@ function App() {
 
   function onKeyDown(e) {
     if (e.keyCode === 38) {
-      setVal(commands[commands.length - 1][0][0]);
+      try {
+        setVal(commands[commands.length - 1][0]);
+      } catch (error) {}
     }
   }
 
@@ -84,13 +106,20 @@ function App() {
         <div className="mainTerminalContainer">
           {commands.map((command, index) => (
             <div key={index} className="exprContainer">
-              <div>{`${user}@${device} ~ %  ${command[0]}`}</div>
-              <div>{`${command[1]}`}</div>
+              <div className="row">
+                <div
+                  style={{ color: "red", marginRight: "5px" }}
+                >{`${user}@${device} ~ % `}</div>
+                <div>{command[0]}</div>
+              </div>
+
+              <br></br>
+              <div dangerouslySetInnerHTML={{ __html: `${command[1]}` }}></div>
             </div>
           ))}
           <div className="inputRow">
             <p
-              style={{ color: "red" }}
+              style={{ color: "red", marginRight: "5px" }}
               className="pathP"
             >{`${user}@${device} ~ % `}</p>
 
