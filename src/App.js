@@ -3,7 +3,11 @@ import React, { useState } from "react";
 
 var path = "/Users/Jonas";
 var currentDir = "Jonas";
-var folders = { Jonas: ["ReadME.txt", "Dokuments"], Dokuments: [] };
+var folders = {
+  Jonas: ["ReadME.txt", "Dokuments"],
+  Dokuments: [],
+  Users: ["Jonas"],
+};
 var parentDir = { Jonas: "Users", Dokuments: "Jonas" };
 var color = "#00f100";
 
@@ -31,6 +35,9 @@ function App() {
         return "please provide a name";
       }
       if (dir === "..") {
+        if (parentDir[currentDir] === undefined) {
+          return "Can't go back!";
+        }
         currentDir = parentDir[currentDir];
         let index = path.lastIndexOf("/");
         path = path.substring(0, index);
@@ -145,7 +152,7 @@ function App() {
               <div className="row">
                 <div
                   style={{ color: "red", marginRight: "5px" }}
-                >{`${user}@${device} ~ % `}</div>
+                >{`${user}@${device} ~${path} % `}</div>
                 <div>{command[0]}</div>
               </div>
 
@@ -161,7 +168,7 @@ function App() {
             <p
               style={{ color: "red", marginRight: "5px" }}
               className="pathP"
-            >{`${user}@${device} ~ % `}</p>
+            >{`${user}@${device} ~${path} % `}</p>
 
             <input
               className="terminalInput"
