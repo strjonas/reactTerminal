@@ -27,6 +27,9 @@ function App() {
       return "";
     } else if (command.includes("cd")) {
       let dir = command.split(" ")[1];
+      if (dir === undefined) {
+        return "please provide a name";
+      }
       if (dir === "..") {
         currentDir = parentDir[currentDir];
         let index = path.lastIndexOf("/");
@@ -38,6 +41,19 @@ function App() {
       currentDir = dir;
       path = path + "/" + dir;
       return "";
+    } else if (command.includes("touch")) {
+      let file = command.split(" ")[1];
+      if (file === undefined) {
+        return "please provide a filename";
+      }
+      folders[currentDir].push(file);
+      return "";
+    } else if (
+      command.includes("cat") ||
+      command.includes("vim") ||
+      command.includes("nano")
+    ) {
+      return "files haven't been implemented yet!";
     }
 
     switch (command) {
